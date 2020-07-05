@@ -1,12 +1,12 @@
 # nodes:
-#   - name: node1
-#     username: username1
-#     password: password1
-#     host: host1
-#     port: 22
-#     origin: origin1
-#     dest: dest1
-#     rename: rename1
+#   - name: node1                                   # 节点名
+#     username: username1                           # 服务器用户名
+#     password: password1                           # 服务器密码
+#     host: host1                                   # 服务器地址
+#     port: 22                                      # SSH端口
+#     origin: origin1                               # 上传文件路径
+#     dest: dest1                                   # 上传目标路径
+#     rename: rename1                               # 文件重命名，空为使用原文件名
 #
 #   - name: node2
 #     username: your server username

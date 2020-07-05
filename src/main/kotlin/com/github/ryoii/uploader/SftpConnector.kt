@@ -30,7 +30,7 @@ class SftpConnector(private val node: Node) {
         origin.inputStream().use {
             channel.cd(dest)
             channel.put(
-                it, rename ?: origin.name,
+                it, if (rename.isNullOrBlank()) origin.name else rename,
                 Monitor(origin.length(), node).apply { MonitorManager.register(this) }
             )
         }

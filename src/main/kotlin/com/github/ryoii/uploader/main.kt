@@ -6,9 +6,12 @@ import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
 
+    ANSIHelper.enableANSI()
+
     val nodes = getNodes(args)
 
     nodes.nodes.forEach {
+        println("正在上传到 ${it.host}")
         it.upload()
     }
 }

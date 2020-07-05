@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.github.ryoii.loader"
-version = "0.0.1"
+version = "0.1.0"
 
 repositories {
     maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")

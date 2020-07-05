@@ -2,6 +2,7 @@ package com.github.ryoii.uploader
 
 import org.yaml.snakeyaml.Yaml
 import java.io.File
+import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
@@ -11,8 +12,9 @@ fun main(args: Array<String>) {
     val nodes = getNodes(args)
 
     nodes.nodes.forEach {
-        println("正在上传到 ${it.host}")
-        it.upload()
+        thread {
+            it.upload()
+        }
     }
 }
 

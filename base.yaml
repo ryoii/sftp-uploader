@@ -1,5 +1,6 @@
 # nodes:
-#   - username: username1
+#   - name: node1
+#     username: username1
 #     password: password1
 #     host: host1
 #     port: 22
@@ -7,7 +8,8 @@
 #     dest: dest1
 #     rename: rename1
 #
-#   - username: your server username
+#   - name: node2
+#     username: your server username
 #     password: your server password
 #     host: your server host
 #     port: sftp port

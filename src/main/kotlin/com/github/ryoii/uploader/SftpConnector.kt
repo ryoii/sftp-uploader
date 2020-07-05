@@ -29,37 +29,33 @@ class SftpConnector(private val node: Node) {
 
         origin.inputStream().use {
             channel.cd(dest)
-            channel.put(it, rename ?: origin.name, Monitor(origin.length()))
+            channel.put(
+                it, rename ?: origin.name,
+                Monitor(origin.length(), node).apply { MonitorManager.register(this) }
+            )
         }
     }
 }
 
-class Monitor(private val size: Long) : SftpProgressMonitor {
+class Monitor(internal val size: Long, val node: Node) : SftpProgressMonitor {
 
     var current: Long = 0
     var start: Long = 0
+    var isFinish: Boolean = false
+        private set
 
     override fun count(count: Long): Boolean {
         current += count
-        val percent = (100 * current / size).toInt()
-        print("${percent}% ${progressString(percent)} ${current / (System.currentTimeMillis() - start) } KB/s\r")
+        MonitorManager.refresh()
         return true
     }
 
-    override fun end() { println("\n") }
+    override fun end() {
+        isFinish = true
+        MonitorManager.refresh()
+    }
 
     override fun init(op: Int, src: String?, dest: String?, max: Long) {
         start = System.currentTimeMillis()
-    }
-
-    private fun progressString(percent: Int, size: Int = 50): String {
-        val show = (percent * size / 100.0).toInt()
-        return buildString {
-            append("|")
-            repeat(show) { append("=") }
-            append(">")
-            repeat(size - show) { append(" ") }
-            append("|")
-        }
     }
 }

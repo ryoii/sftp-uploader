@@ -3,6 +3,7 @@ package com.github.ryoii.uploader
 import java.io.File
 
 class Node {
+    var name: String = "anonymous"
     var username: String = ""
     var password: String = ""
     var host: String = ""

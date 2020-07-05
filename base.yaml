@@ -12,7 +12,7 @@
 #     username: your server username
 #     password: your server password
 #     host: your server host
-#     port: sftp port
+#     port: ssh port
 #     origin: the file will be upload
 #     dest: the destination path
-#     rename: (optional) the file will be rename
+#     rename: (optional) the file will be rename, blank to use original filename

@@ -11,6 +11,8 @@ fun main(args: Array<String>) {
 
     val nodes = getNodes(args)
 
+    println("匹配到${nodes.nodes.size}个节点")
+
     nodes.nodes.forEach {
         thread {
             it.upload()

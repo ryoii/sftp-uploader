@@ -24,7 +24,7 @@ fun Node.upload() {
             upload(File(origin), dest, rename)
             disconnect()
         } catch (e: Exception) {
-            println("连接服务器失败或密码错误")
+            println("节点${name}连接服务器失败或密码错误")
             return
         }
     }

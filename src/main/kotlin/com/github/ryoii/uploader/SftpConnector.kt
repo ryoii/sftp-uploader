@@ -21,7 +21,10 @@ class SftpConnector(private val node: Node) {
     }
 
     fun upload(origin: File, dest: String, rename: String? = null) {
-        if (!origin.exists()) return
+        if (!origin.exists()) {
+            println("文件${origin.name}不存在")
+            return
+        }
 
         val channel: ChannelSftp = session.openChannel("sftp").apply {
             connect()

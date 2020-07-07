@@ -27,7 +27,7 @@ class SftpConnector(private val node: Node) {
         }
 
         val channel: ChannelSftp = session.openChannel("sftp").apply {
-            connect()
+            connect(node.timeout)
         } as ChannelSftp
 
         origin.inputStream().use {

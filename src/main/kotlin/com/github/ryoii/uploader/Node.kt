@@ -11,6 +11,7 @@ class Node {
     var origin: String = ""
     var dest: String = ""
     var rename: String? = null
+    var timeout: Int = 30_000
 }
 
 class Nodes {
@@ -20,7 +21,7 @@ class Nodes {
 fun Node.upload() {
     SftpConnector(this).apply {
         try {
-            connect(1_000)
+            connect(timeout)
             upload(File(origin), dest, rename)
             disconnect()
         } catch (e: Exception) {

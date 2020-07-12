@@ -13,12 +13,13 @@ object MonitorManager {
         lineCount = 0
 
         monitors.forEach {
+            delLine()
 
             if (it.isFinish) {
-                println("\r[${it.node.name}] ${100}% ${progressString(100)} 已完成    ")
+                println("\r[${it.node.name}] ${100}% ${progressString(100)} 已完成")
             } else {
                 val percent = (100 * it.current / it.size).toInt()
-                println("\r[${it.node.name}] ${percent}% ${progressString(percent)} ${it.current / (System.currentTimeMillis() - it.start) } KB/s    ")
+                println("\r[${it.node.name}] ${percent}% ${progressString(percent)} ${it.current / (System.currentTimeMillis() - it.start) } KB/s")
             }
 
             lineCount++

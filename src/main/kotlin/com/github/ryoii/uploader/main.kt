@@ -13,6 +13,7 @@ fun main(args: Array<String>) {
 
     println("匹配到${nodes.nodes.size}个节点")
 
+    hideCursor()
     nodes.nodes.forEach {
         thread {
             it.upload()

@@ -7,7 +7,6 @@ object MonitorManager {
 
     fun register(monitor: Monitor) = monitors.add(monitor)
 
-    @Synchronized
     fun refresh() {
         upLine(lineCount)
         lineCount = 0

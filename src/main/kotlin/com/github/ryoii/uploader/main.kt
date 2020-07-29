@@ -15,9 +15,7 @@ fun main(args: Array<String>) {
 
     hideCursor()
     nodes.nodes.forEach {
-        thread {
-            it.upload()
-        }
+        it.upload()
     }
 }
 

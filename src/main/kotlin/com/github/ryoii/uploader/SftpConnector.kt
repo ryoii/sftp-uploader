@@ -44,7 +44,7 @@ class SftpConnector(private val node: Node) {
             put(
                 /* src = */ it,
                 /* dst = */ dst,
-                /* monitor */ Monitor(10000, node.name, dst)
+                /* monitor */ Monitor(origin.length(), node.name, dst)
                     .apply { MonitorManager.register(this) }
             )
         }

@@ -19,7 +19,7 @@ object MonitorManager {
             if (it.isFinish) {
                 println("\r[${it.node}] [${it.fileDesc}] 100% ${progressString(100)} 已完成")
             } else {
-                val percent = 100 * (it.current / it.size).toInt()
+                val percent = (100 * it.current / it.size).toInt()
                 val speed = it.current / (System.currentTimeMillis() - it.start)
                 val left = if (speed != 0L) ((it.size - it.current) shr 10) / speed else Long.MAX_VALUE
                 println("\r[${it.node}] [${it.fileDesc}] ${percent}% ${progressString(percent)} ${speedStr(speed)} ${timeStr(left)}")

@@ -4,6 +4,7 @@ import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.JSch
 import com.jcraft.jsch.SftpProgressMonitor
 import java.io.File
+import kotlin.math.min
 
 class SftpConnector(private val node: Node) {
 
@@ -22,7 +23,7 @@ class SftpConnector(private val node: Node) {
 
     fun upload(origin: File, dest: String, rename: String? = null) {
         if (!origin.exists()) {
-            println("文件${origin.name}不存在")
+            println("文件或文件夹${origin.name}不存在")
             return
         }
 
@@ -30,25 +31,53 @@ class SftpConnector(private val node: Node) {
             connect(node.timeout)
         } as ChannelSftp
 
+        when {
+            origin.isFile -> channel.uploadFile(origin, dest, rename)
+            origin.isDirectory -> channel.uploadDir(origin, dest)
+        }
+    }
+
+    private fun ChannelSftp.uploadFile(origin: File, dest: String, rename: String? = null) {
         origin.inputStream().use {
-            channel.cd(dest)
-            channel.put(
-                it, if (rename.isNullOrBlank()) origin.name else rename,
-                Monitor(origin.length(), node).apply { MonitorManager.register(this) }
+            cd(dest)
+            val dst = if (rename.isNullOrBlank()) origin.name else rename
+            put(
+                /* src = */ it,
+                /* dst = */ dst,
+                /* monitor */ Monitor(10000, node.name, dst)
+                    .apply { MonitorManager.register(this) }
             )
+        }
+    }
+
+    private fun ChannelSftp.uploadDir(origin: File, dest: String) {
+        kotlin.runCatching { mkdir(dest) }
+
+        val files = origin.listFiles() ?: return
+        for (file in files) {
+            when {
+                file.isFile -> uploadFile(file, dest, null)
+                file.isDirectory -> {
+                    uploadDir(file, file.name)
+                    cd("..")
+                }
+            }
         }
     }
 }
 
-class Monitor(internal val size: Long, val node: Node) : SftpProgressMonitor {
+class Monitor(internal val size: Long, val node: String, private val fileName: String) : SftpProgressMonitor {
 
     var current: Long = 0
     var start: Long = 0
     var isFinish: Boolean = false
         private set
 
+    val fileDesc: String
+        get() = if (fileName.length >= 8) fileName.substring(0..5) + "..." else fileName
+
     override fun count(count: Long): Boolean {
-        current += count
+        current = min(current + count, size)
         MonitorManager.refresh()
         return true
     }

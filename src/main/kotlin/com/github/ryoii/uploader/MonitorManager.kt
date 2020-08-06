@@ -1,5 +1,7 @@
 package com.github.ryoii.uploader
 
+import kotlin.math.max
+
 object MonitorManager {
 
     private val monitors: MutableList<Monitor> = mutableListOf()
@@ -15,12 +17,12 @@ object MonitorManager {
             delLine()
 
             if (it.isFinish) {
-                println("\r[${it.node.name}] ${100}% ${progressString(100)} 已完成")
+                println("\r[${it.node}] [${it.fileDesc}] 100% ${progressString(100)} 已完成")
             } else {
-                val percent = (100 * it.current / it.size).toInt()
+                val percent = 100 * (it.current / it.size).toInt()
                 val speed = it.current / (System.currentTimeMillis() - it.start)
-                val left = ((it.size - it.current) shr 10) / speed
-                println("\r[${it.node.name}] ${percent}% ${progressString(percent)} ${speedStr(speed)} ${timeStr(left)}")
+                val left = if (speed != 0L) ((it.size - it.current) shr 10) / speed else Long.MAX_VALUE
+                println("\r[${it.node}] [${it.fileDesc}] ${percent}% ${progressString(percent)} ${speedStr(speed)} ${timeStr(left)}")
             }
 
             lineCount++
